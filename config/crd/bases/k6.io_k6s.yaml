@@ -2103,6 +2103,7 @@ spec:
                   our runners are in
                 enum:
                 - initialization
+                - wait initialization
                 - initialized
                 - created
                 - started
