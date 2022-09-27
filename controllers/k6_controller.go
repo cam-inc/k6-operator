@@ -66,6 +66,8 @@ func (r *K6Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		// Note: it is present as a separate stage to ensure there's only one
 		// initialization job at a time
 		return ctrl.Result{}, nil
+	case "wait initialization":
+		return WaitInitializationJobs(ctx, log, k6, r)
 	case "initialized":
 		return CreateJobs(ctx, log, k6, r)
 	case "created":
