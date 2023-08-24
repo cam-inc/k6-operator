@@ -1096,6 +1096,8 @@ spec:
                         type: string
                       name:
                         type: string
+                      readOnly:
+                        type: boolean
                     required:
                     - name
                     type: object
