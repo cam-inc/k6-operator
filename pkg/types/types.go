@@ -16,6 +16,7 @@ type Script struct {
 	Filename string
 	Path     string
 	Type     string // ConfigMap | VolumeClaim | LocalFile
+	ReadOnly bool
 }
 
 // ParseScript extracts Script data bits from K6 spec and performs basic validation
@@ -23,6 +24,7 @@ func ParseScript(spec *v1alpha1.K6Spec) (*Script, error) {
 	s := &Script{
 		Filename: "test.js",
 		Path:     "/test/",
+		ReadOnly: spec.Script.VolumeClaim.ReadOnly,
 	}
 
 	if spec.Script.VolumeClaim.Name != "" {
@@ -70,6 +72,7 @@ func (s *Script) Volume() []corev1.Volume {
 				VolumeSource: corev1.VolumeSource{
 					PersistentVolumeClaim: &corev1.PersistentVolumeClaimVolumeSource{
 						ClaimName: s.Name,
+						ReadOnly:  s.ReadOnly,
 					},
 				},
 			},
@@ -102,6 +105,7 @@ func (s *Script) VolumeMount() []corev1.VolumeMount {
 		corev1.VolumeMount{
 			Name:      "k6-test-volume",
 			MountPath: "/test",
+			ReadOnly:  s.ReadOnly,
 		},
 	}
 }
